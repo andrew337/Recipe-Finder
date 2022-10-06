@@ -16,11 +16,16 @@ class CategoryVC: UICollectionViewController {
 
         view.backgroundColor = .systemBackground
     
-        NetworkManager.shared.loadCategories { [weak self] category in
-            DispatchQueue.main.async {
-                self?.categories = category.categories
-                //print(category.categories[0].strCategoryThumb)
-                self?.collectionView.reloadData()
+        NetworkManager.shared.loadCategories { [weak self] result in
+            switch result {
+            case .success(let category):
+                DispatchQueue.main.async {
+                    self?.categories = category.categories
+                    //print(category.categories[0].strCategoryThumb)
+                    self?.collectionView.reloadData()
+                }
+            case.failure(let error):
+                print(error)
             }
         }
     }

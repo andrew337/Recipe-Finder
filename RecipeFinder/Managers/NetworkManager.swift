@@ -10,7 +10,7 @@ import UIKit
 class NetworkManager {
     static let shared = NetworkManager()
     
-    func loadCategories( _ completion : @escaping (Category) -> Void) {
+    func loadCategories( _ completion : @escaping (Result<Category, Error>) -> Void) {
         let urlString = "https://www.themealdb.com/api/json/v1/1/categories.php"
         
         guard let url = URL(string: urlString) else {
@@ -28,7 +28,7 @@ class NetworkManager {
             do {
                 let decoder = JSONDecoder()
                 let results = try decoder.decode(Category.self, from: data)
-                completion(results)
+                completion(.success(results))
             } catch {
                 print(ErrorString.unableToComplete)
                 return
